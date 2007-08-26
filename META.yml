@@ -1,0 +1,15 @@
+# http://module-build.sourceforge.net/META-spec.html
+#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
+name:         File-FcntlLock
+version:      0.09
+version_from: lib/File/FcntlLock.pm
+installdirs:  site
+requires:
+    Carp:                          0
+    DynaLoader:                    0
+    Errno:                         0
+    Exporter:                      0
+    POSIX:                         0
+
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.30_01
