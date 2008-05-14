@@ -3,9 +3,9 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# Copyright (C) 2002-2007 Jens Thoms Toerring <jt@toerring.de>
+# Copyright (C) 2002-2008 Jens Thoms Toerring <jt@toerring.de>
 #
-# $Id: FcntlLock.pm 8084 2007-08-26 08:49:07Z jens $
+# $Id: FcntlLock.pm 8093 2008-01-13 19:40:32Z jens $
 
 
 package File::FcntlLock;
@@ -28,7 +28,7 @@ our @EXPORT = qw( F_GETLK F_SETLK F_SETLKW
                   F_RDLCK F_WRLCK F_UNLCK
                   SEEK_SET SEEK_CUR SEEK_END );
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 
 =pod

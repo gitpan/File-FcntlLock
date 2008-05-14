@@ -2,9 +2,9 @@
   This program is free software; you can redistribute it and/or modify it
   under the same terms as Perl itself.
 
-  Copyright (C) 2002-2007 Jens Thoms Toerring <jt@toerring.de>
+  Copyright (C) 2002-2008 Jens Thoms Toerring <jt@toerring.de>
 
-  $Id: FcntlLock.xs 8083 2007-08-26 08:42:53Z jens $
+  $Id: FcntlLock.xs 8093 2008-01-13 19:40:32Z jens $
 */
 
 
@@ -29,7 +29,7 @@ C_fcntl_lock( fd, function, flock_hash, int_err )
     INIT:
         unsigned char flock_struct[ STRUCT_SIZE ];
         HV *fs;
-        SV **sv_type, **sv_whence, **sv_start, **sv_len, **sv_pid;
+        SV **sv_type, **sv_whence, **sv_start, **sv_len;
 
         sv_setiv( int_err, 0 );
 

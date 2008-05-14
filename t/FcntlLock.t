@@ -1,11 +1,11 @@
 # -*- cperl -*-
 #
-# $Id: FcntlLock.t 8083 2007-08-26 08:42:53Z jens $
+# $Id: FcntlLock.t 8093 2008-01-13 19:40:32Z jens $
 #
 #  This program is free software; you can redistribute it and/or modify it
 #  under the same terms as Perl itself.
 #
-#  Copyright (C) 2002-2007 Jens Thoms Toerring <jt@toerring.de>
+#  Copyright (C) 2002-2008 Jens Thoms Toerring <jt@toerring.de>
 #
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl FcntlLock.t'

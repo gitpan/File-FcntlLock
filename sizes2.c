@@ -2,9 +2,9 @@
   This program is free software; you can redistribute it and/or modify it
   under the same terms as Perl itself.
 
-  Copyright (C) 2002-2007 Jens Thoms Toerring <jt@toerring.de>
+  Copyright (C) 2002-2008 Jens Thoms Toerring <jt@toerring.de>
 
-  $Id: sizes2.c 8083 2007-08-26 08:42:53Z jens $
+  $Id: sizes2.c 8093 2008-01-13 19:40:32Z jens $
 */
 
 
