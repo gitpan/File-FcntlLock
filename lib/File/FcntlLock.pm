@@ -3,9 +3,7 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# Copyright (C) 2002-2008 Jens Thoms Toerring <jt@toerring.de>
-#
-# $Id: FcntlLock.pm 8093 2008-01-13 19:40:32Z jens $
+# Copyright (C) 2002-2009 Jens Thoms Toerring <jt@toerring.de>
 
 
 package File::FcntlLock;
@@ -28,7 +26,7 @@ our @EXPORT = qw( F_GETLK F_SETLK F_SETLKW
                   F_RDLCK F_WRLCK F_UNLCK
                   SEEK_SET SEEK_CUR SEEK_END );
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 
 =pod
@@ -41,15 +39,14 @@ File::FcntlLock - File locking with L<fcntl(2)>
 
   use File::FcntlLock;
 
-  my $fs = new Fcntl::FcntlLock;
+  my $fs = new File::FcntlLock;
   $fs->l_type( F_RDLCK );
   $fs->l_whence( SEEK_CUR );
   $fs->l_start( 100 );
   $fs->l_len( 123 );
 
-  my $fh;
-  open $fh, "<file_name" or die "Can't open file: $!\n";
-  $fs->lock( $fh, F_SETLK ) )
+  open my $fh, '<', 'file_name' or die "Can't open file: $!\n";
+  $fs->lock( $fh, F_SETLK )
       or print "Locking failed: " . $fs->error . "\n";
   $fs->l_type( F_UNLCK );
   $fs->lock( $fh, F_SETLK )
@@ -139,7 +136,7 @@ To create a new object representing a flock structure call C<new()>:
   $fs = new File::FcntlLock;
 
 You also can pass the C<new()> method a set of key-value pairs to
-initialize the members of the flock structure, e.g.
+initialize the objects properties, e.g. use
 
   $fs = new File::FcntlLock l_type   => F_WRLCK,
                             l_whence => SEEK_SET,
@@ -226,7 +223,7 @@ sub l_type {
 
 =item C<l_whence()>
 
-Queries or sets the C<l_whence> member of the flock structure,
+Queries or sets the C<l_whence> property of the flock object,
 determining if the C<l_start> value is relative to the start of
 the file, to the current position in the file or to the end of
 the file. The corresponding values are C<SEEK_SET>, C<SEEK_CUR>
@@ -278,8 +275,8 @@ sub l_start {
 =item C<l_len()>
 
 Queries or sets the length of the region (in bytes) in the file
-to be locked. A value of 0 means a lock (starting at C<l_start>)
-to the very end of the file.
+to be locked. A value of 0 is interpreted as to mean a lock (starting
+at C<l_start>) up to the very end of the file.
 
 According to SUSv3 negative values for C<l_start> are allowed
 (resulting in a lock ranging from C<l_start + l_len> to
@@ -304,9 +301,10 @@ sub l_len {
 
 =item C<l_pid()>
 
-This method allows to determine the PID of the process currently
-holding the lock after a call of C<lock()> with C<F_GETLK> that
-indicated that another process is holding the lock.
+This method allows retrieving the PID of a process currently
+holding the lock after a call of C<lock()> with C<F_SETLK> indicated
+that another process is holding the lock. A call to C<lock()>
+with C<F_GETLK> will fill in this value so C<l_pid()> can be called.
 
 =back
 
@@ -321,7 +319,7 @@ sub l_pid {
 
 =pod
 
-When not initialized the flock structure member C<l_type> is set
+When not initialized the flock objects C<l_type> property is set
 to C<F_RDLCK> by default, C<l_whence> to C<SEEK_SET>, and both
 C<l_start> and C<l_len> to 0, i.e. the settings for a read lock
 on the whole file.
@@ -331,7 +329,7 @@ After having set up the object representing a flock structure you
 can determine the current holder of a lock or try to obtain a lock
 by invoking the C<lock()> method with two arguments, a file handle
 (or a file descriptor, the module figures out automatically what
-it got) and a flag indicating the action to be taken, i.e.
+it got) and a flag indicating the action to be taken, e.g.
 
   $fs->lock( $fh, F_SETLK );
 
@@ -344,9 +342,11 @@ There are three values that can be used as the second argument:
 For C<F_GETLK> the C<lock()> method determines if and who currently
 is holding the lock.  If no other process is holding the lock the
 C<l_type> field is set to C<F_UNLCK>. Otherwise the flock structure
-object is set to the values that prevent us from obtaining a lock,
-with the C<l_pid> member set to the PID of the process holding the
-lock.
+object is set to the values that prevent us from obtaining a lock.
+There may be multiple such blocking processes, including some that
+are themselves blocked waiting to obtain a lock. C<F_GETLK> will
+only make details of one of these visible, and one has no control
+over which process this is.
 
 =item C<F_SETLK>
 
@@ -378,11 +378,12 @@ sub lock {
     my ( $flock_struct, $fh, $action ) = @_;
     my ( $ret, $err );
 
-    # Set the file descriptors value to something which will make fcntl(2)
-    # fail with EBADF if the argument is undefined or is a file handle that
-    # is invalid.
+    # Figure out the file descriptor - we might get a file handle, a
+    # typeglob or already a file descriptor) and set it to a value which
+    # will make fcntl(2) fail with EBADF if the argument is undefined or
+    # is a file handle that's invalid.
 
-    my $fd = ref( $fh ) ? fileno( $fh ) : $fh;
+    my $fd = ( ref( $fh ) or $fh =~ /^\*/ ) ? fileno( $fh ) : $fh;
     $fd = -1 unless defined $fd;
 
     # Set the action argument to something invalid if it's not defined
@@ -479,8 +480,10 @@ SEEK_SET SEEK_CUR SEEK_END
 
 =head1 CREDITS
 
-Thanks to Mark-Jason Dominus (MJD) and Benjamin Goldberg (GOLDBB) for
-helpful discussions, code examples and encouragement.
+Thanks to Mark Jason Dominus (MJD) and Benjamin Goldberg (GOLDBB) for
+helpful discussions, code examples and encouragement. Glenn Herteg
+pointed out several problems and also helped improve the documentation.
+
 
 =head1 AUTHOR
 
