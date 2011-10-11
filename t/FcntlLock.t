@@ -3,7 +3,7 @@
 #  This program is free software; you can redistribute it and/or modify it
 #  under the same terms as Perl itself.
 #
-#  Copyright (C) 2002-2009 Jens Thoms Toerring <jt@toerring.de>
+#  Copyright (C) 2002-2011 Jens Thoms Toerring <jt@toerring.de>
 #
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl FcntlLock.t'
@@ -168,7 +168,7 @@ if ( defined open $fh, '>', './fcntllock_test' ) {
         if ( ! $failed ) {
             $fs->l_type( F_WRLCK );
             ok(     $fs->lock( $fh, F_SETLK )
-                    and $fs->l_type( F_UNLCK ), $fs->lock( $fh, F_SETLK ) );
+                and $fs->l_type( F_UNLCK ), $fs->lock( $fh, F_SETLK ) );
         } else {
             ok( 0 );
         }
