@@ -26,7 +26,7 @@ our @EXPORT = qw( F_GETLK F_SETLK F_SETLKW
                   F_RDLCK F_WRLCK F_UNLCK
                   SEEK_SET SEEK_CUR SEEK_END );
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 
 =pod
@@ -483,7 +483,9 @@ SEEK_SET SEEK_CUR SEEK_END
 Thanks to Mark Jason Dominus (MJD) and Benjamin Goldberg (GOLDBB) for
 helpful discussions, code examples and encouragement. Glenn Herteg
 pointed out several problems and also helped improve the documentation.
-
+Julian Moreno Patino also helped correcting the documentation and
+pointed out problems arising on GNU Hurd (which seems to have only
+very rudimentary support for locking with fcntl()).
 
 =head1 AUTHOR
 
