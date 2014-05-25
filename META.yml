@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               File-FcntlLock
-version:            0.15
+version:            0.16
 abstract:           File locking with L<fcntl(2)>
 author:
     - Jens Thoms Toerring jt@toerring.de
