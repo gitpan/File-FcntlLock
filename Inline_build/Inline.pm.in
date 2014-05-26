@@ -22,6 +22,9 @@ use File::Spec;
 use base qw( File::FcntlLock::Core );
 
 
+our $VERSION = File::FcntlLock::Core->VERSION;
+
+
 my ( $packstr, @member_list );
 
 
@@ -150,6 +153,9 @@ main( void )
                 break;
 
             case 8 :
+#if defined NO_Q_FORMAT
+                exit( EXIT_FAILURE );
+#endif
 				strcat( packstr, "q" );
                 break;
 
@@ -180,8 +186,11 @@ EOF
 									 DIR      => File::Spec->tmpdir( ) );
 	close $exec_file;
 
+    my $qflag = eval { pack 'q', 1 };
+    $qflag = $@ ? '-DNO_Q_FORMAT' : '';
+
 	die "Failed to run the C compiler '$Config{cc}'\n"
-		if system "$Config{cc} -o $exec_file $c_file";
+		if system "$Config{cc} $qflag -o $exec_file $c_file";
 
 	# Run the program and read it's output, it writes out the template string
 	# we need for packing and unpacking the binary C struct flock required for
@@ -198,6 +207,9 @@ EOF
 	}
 
 	# Make sure we got all information needed
+
+    die   "Your Perl version does not support the 'q' format for pack() "
+        . "and unpack()\n" unless defined $packstr;
 
 	die "Failed to obtain all needed data about the C struct flock\n"
 		unless @member_list == 5;

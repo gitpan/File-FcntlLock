@@ -262,6 +262,16 @@ The package exports the following constants:
 =back
 
 
+=head1 INCOMPATIBILITIES
+
+Obviously, this module requires that there's a L<fcntl(2)> system
+call. Note also that under certain circumstances the File::FcntlLock::Pure
+and File::FcntlLock::Inline modules may not have been installed. This
+happens on 32-bit systems that use 64-bit integers in their flock
+structure but were the installed Perl version doesn't support the 'q'
+format for its L<pack()> and L<unpack()> functions.
+
+
 =head1 CREDITS
 
 Thanks to Mark Jason Dominus and Benjamin Goldberg for helpful discussions,

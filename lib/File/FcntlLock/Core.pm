@@ -18,6 +18,9 @@ use Carp;
 use base qw( File::FcntlLock::Errors Exporter );
 
 
+our $VERSION = '0.17';
+
+
 # Items to export into callers namespace by default.
 
 our @EXPORT = qw( F_GETLK F_SETLK F_SETLKW

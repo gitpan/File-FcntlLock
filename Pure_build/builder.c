@@ -122,6 +122,15 @@ main( void )
                 break;
 
             case 8 :
+#if defined NO_Q_FORMAT
+                /* There seem to be some 32-bit systems out there where off_t
+                   is a 64-bit integer but Perl has no 'q' format for its
+                   pack() and unpack() functions. For these  systemsthere
+                   doesn't seem to be a good way for setting up the flock
+                   structure properly using pure Perl. */
+
+                exit( EXIT_FAILURE );
+#endif
 				strcat( packstr, "q" );
                 break;
 
