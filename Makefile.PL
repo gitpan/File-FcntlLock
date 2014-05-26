@@ -26,7 +26,7 @@ assemble_inline( ) if assemble_pure( );
 
 WriteMakefile(
     NAME          => 'File::FcntlLock',
-    VERSION_FROM  => 'lib/File/FcntlLock/Core.pm',
+    VERSION_FROM  => 'lib/File/FcntlLock.pm',
     ABSTRACT_FROM => 'lib/File/FcntlLock.pod',
     LICENSE       => 'perl',
     AUTHOR        => 'Jens Thoms Toerring jt@toerring.de',

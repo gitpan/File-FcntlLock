@@ -1,5 +1,9 @@
 Revision history for Perl extension File::FcntlLock
 
+0.18  Mon May 26 2014
+    - CPAN didn't like the version number in FcntlLock.pm which
+      was derived from that of Core.pm:-(
+
 0.17  Mon May 26 2014
     - CPAN testing showed that there are 32-bit systems where the
       off_t member of the flock struct is a 64-bit integer but Perl
