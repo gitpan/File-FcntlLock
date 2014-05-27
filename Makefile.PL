@@ -58,7 +58,7 @@ sub check_for_compiler {
     print $fh "int main(void)\n{\nreturn 0;\n}\n";
     close $fh;
 
-    if ( system "$Config{cc} -o cc_test cc_test.c" ) {
+    if ( system "$Config{cc} $Config{ccflags} -o cc_test cc_test.c" ) {
         unlink 'cc_test.c';
         die "Can't run C compiler '$Config{cc}'\n";
     }
@@ -92,7 +92,7 @@ int main( void ) {
 EOF
     close $fh;
 
-    if ( system "$Config{cc} -o fcntl_test fcntl_test.c" ) {
+    if ( system "$Config{cc} $Config{ccflags} -o fcntl_test fcntl_test.c" ) {
         unlink 'fcntl_test.c';
         die "OS unsupported\n";
     }
@@ -131,9 +131,10 @@ sub assemble_pure {
 	# output nothing and we abandon trying to  build the "pure Perl" modules.
 
 	my $qflag = eval { pack 'q', 1; };
-	$qflag =  $@ ? '-DNO_Q_FORMAT' : '';
+	$qflag = $@ ? '-DNO_Q_FORMAT' : '';
 
-    goto FAIL if system "$Config{cc} $qflag -o builder builder.c";
+    goto FAIL
+        if system "$Config{cc} $Config{ccflags} $qflag -o builder builder.c";
     goto FAIL unless copy 'Pure.tmpl', 'Pure.pm';
     goto FAIL unless open my $out, '>>', 'Pure.pm';
     goto FAIL unless open my $in, "-|", './builder';

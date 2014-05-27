@@ -1,7 +1,11 @@
 Revision history for Perl extension File::FcntlLock
 
+0.19  Tue May 27 2014
+    - Builds failed on 32-bit systems due to missing CFLAGS derived
+      from the Perl installation.
+
 0.18  Mon May 26 2014
-    - CPAN didn't like the version number in FcntlLock.pm which
+    - CPAN didn't find the version number in FcntlLock.pm which
       was derived from that of Core.pm:-(
 
 0.17  Mon May 26 2014

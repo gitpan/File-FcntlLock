@@ -17,7 +17,7 @@ use Carp;
 use base qw( File::FcntlLock::Core DynaLoader );
 
 
-our $VERSION = '0.18';
+our $VERSION = '0.19';
 
 
 bootstrap File::FcntlLock $VERSION;

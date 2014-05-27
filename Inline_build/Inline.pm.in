@@ -190,7 +190,7 @@ EOF
     $qflag = $@ ? '-DNO_Q_FORMAT' : '';
 
 	die "Failed to run the C compiler '$Config{cc}'\n"
-		if system "$Config{cc} $qflag -o $exec_file $c_file";
+		if system "$Config{cc} $Config{ccflags} $qflag -o $exec_file $c_file";
 
 	# Run the program and read it's output, it writes out the template string
 	# we need for packing and unpacking the binary C struct flock required for
