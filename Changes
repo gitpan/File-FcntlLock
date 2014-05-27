@@ -1,5 +1,8 @@
 Revision history for Perl extension File::FcntlLock
 
+0.20  Tue May 27 2014
+    - Problem on GNU Hurd hopefully fixed and some cosmetic changes.
+
 0.19  Tue May 27 2014
     - Builds failed on 32-bit systems due to missing CFLAGS derived
       from the Perl installation.
